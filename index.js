@@ -32,7 +32,9 @@ https.get('https://api.citybik.es/v2/networks/girocleta', (resp) => {
   // The whole response has been received. Print out the result.
   resp.on('end', () => {
     var d = new Date();
-    var currentTime = d.toLocaleString();
+    var currentTime = d.toLocaleString('es-ES',{
+                    timeZone: "Europe/Andorra"
+                });
     let jsonGirocleta = JSON.parse(data);
     let twits = []
     let twit = ''
