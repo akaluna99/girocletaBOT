@@ -1,3 +1,4 @@
+var Twit = require('twit')
 const config = require('./config');
 
 // Using Twit library
