@@ -39,10 +39,20 @@ https.get('https://api.citybik.es/v2/networks/girocleta', (resp) => {
     let twits = []
     let twit = ''
     for (let mStation of jsonGirocleta.network.stations) {
-      twit += '\n🅿: ' + mStation['name'];
-      twit += '\n🔓: ' + String(mStation['empty_slots']);
-      twit += '\n🚲: ' + String(mStation['free_bikes']);
-      twit += '\n';
+      if (mStation['free_bikes'] < 5 || mStation['empty_slots'] < 5){
+        twit += '\n🅿: ' + mStation['name'];
+        if (mStation['free_bikes'] < 5){
+          twit += '\n🚲: ' + String(mStation['free_bikes'] + ' ⚠️');
+        } else {
+          twit += '\n🚲: ' + String(mStation['free_bikes']);
+        }
+        if (mStation['empty_slots'] < 5){
+          twit += '\n🔓: ' + String(mStation['empty_slots'] + ' ⚠️');
+        } else {
+          twit += '\n🔓: ' + String(mStation['empty_slots']);
+        }
+        twit += '\n'; 
+      }
       
       if (twit.length > 200) {
         twits.push(twit)
