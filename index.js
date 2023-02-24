@@ -39,14 +39,14 @@ https.get('https://api.citybik.es/v2/networks/girocleta', (resp) => {
     let twits = []
     let twit = ''
     for (let mStation of jsonGirocleta.network.stations) {
-      if (mStation['free_bikes'] < 5 || mStation['empty_slots'] < 5){
+      if (mStation['free_bikes'] <= 5 || mStation['empty_slots'] <= 5){
         twit += '\n🅿: ' + mStation['name'];
-        if (mStation['free_bikes'] < 5){
+        if (mStation['free_bikes'] <= 5){
           twit += '\n🚲: ' + String(mStation['free_bikes'] + ' ⚠️');
         } else {
           twit += '\n🚲: ' + String(mStation['free_bikes']);
         }
-        if (mStation['empty_slots'] < 5){
+        if (mStation['empty_slots'] <= 5){
           twit += '\n🔓: ' + String(mStation['empty_slots'] + ' ⚠️');
         } else {
           twit += '\n🔓: ' + String(mStation['empty_slots']);
@@ -58,6 +58,9 @@ https.get('https://api.citybik.es/v2/networks/girocleta', (resp) => {
         twits.push(twit)
         twit = ''
       }
+    }
+    if (twit == ''){
+      twit = '\nTotes les parades tenen un minim 10 bicicletes/aparcaments disponibles';
     }
     twits.push(twit);
     var currentTwit = twits.shift()
