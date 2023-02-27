@@ -59,7 +59,7 @@ https.get('https://api.citybik.es/v2/networks/girocleta', (resp) => {
         twit = ''
       }
     }
-    if (twit == ''){
+    if (twit == '' && twits.length == 0){
       twit = '\nTotes les parades tenen un minim 10 bicicletes/aparcaments disponibles';
     }
     twits.push(twit);
