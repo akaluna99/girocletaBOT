@@ -18,10 +18,10 @@ jobs:
       - name: Instalar dependencias
         run: npm install twitter-api-v2
       - name: Run Bot
-        run: node test.js
         env:
            CONSUMER_KEY: ${{ secrets.CONSUMER_KEY }}
            CONSUMER_SECRET: ${{ secrets.CONSUMER_SECRET }}
            ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
            ACCESS_TOKEN_SECRET: ${{ secrets.ACCESS_TOKEN_SECRET }}
+        run: node test.js
         
