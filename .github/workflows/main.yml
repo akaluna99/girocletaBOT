@@ -9,15 +9,19 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Checkout código
+        uses: actions/checkout@v2
+      - name: Instalar Node.js
+        uses: actions/setup-node@v2
         with:
-          node-version: 18
-        env:
-          CONSUMER_KEY: ${{ secrets.CONSUMER_KEY }}
-          CONSUMER_SECRET: ${{ secrets.CONSUMER_SECRET }}
-          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-          ACCESS_TOKEN_SECRET: ${{ secrets.ACCESS_TOKEN_SECRET }}
+          node-version: '14'  # Cambia la versión de Node.js según tus necesidades
+      - name: Instalar dependencias
+        run: npm install twitter-api-v2
+      #  env:
+      #    CONSUMER_KEY: ${{ secrets.CONSUMER_KEY }}
+      #    CONSUMER_SECRET: ${{ secrets.CONSUMER_SECRET }}
+      #    ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+      #    ACCESS_TOKEN_SECRET: ${{ secrets.ACCESS_TOKEN_SECRET }}
       - name: Run Bot
-      - run: npm i twitter-api-v2
-      - run: node index.js
+        run: echo 'Hola'
+      #- run: node index.js
