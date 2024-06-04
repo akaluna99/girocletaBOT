@@ -15,10 +15,10 @@ jobs:
           node-version: 20
       - run: npm ci
       - run: npm test
+      - run: npm i axios
+      - run: npm i process
       - name: Instalar dependencias
         run: npm install twitter-api-v2
-      - name: Run Test
-        run: echo 'Hola'
       - name: Run Bot
         run: node test.js
         env:
