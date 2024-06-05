@@ -2,8 +2,15 @@ const client = new TwitterApi({
     appKey: '6pXo9b2KEGyBTmvG56iWCcUxR',
     appSecret: '9q8BjP4u1lH9kJegtTI1Z9wgaxMZnmyYzdS1eBDgZkbZbAnr3Q',
     accessToken: '1600487561914458113-udyo92YkfpT71a4HXWpGnq1L2YWOc5',
-    accessSecret: 'I4rlxI0ks1MAjmf3B21LEtUF9Phg4kSa7ZyhpyyFRd7EU'
+    accessSecret: 'I4rlxI0ks1MAjmf3B21LEtUF9Phg4kSa7ZyhpyyFRd7EU',
 });
+
+/*const client = new TwitterApi({
+    appKey: process.env.CONSUMER_KEY,
+    appSecret: process.env.CONSUMER_SECRET,
+    accessToken: process.env.ACCESS_TOKEN,
+    accessSecret: process.env.ACCESS_TOKEN_SECRET
+});*/
 
 import https from 'axios';
 import { exit } from 'process';
@@ -67,3 +74,17 @@ var result = await client.v2.tweet({
 });
 console.log(result)
 postTwit(twits, result.data.id)
+/*
+Bot.post('statuses/update', {
+    status: currentTime + '\n' + currentTwit
+}, function (err, data, response) {
+    postTwit(twits, data.id_str)
+});
+
+    });
+
+}).on("error", (err) => {
+    console.log("Error: " + err.message);
+});
+
+*/
