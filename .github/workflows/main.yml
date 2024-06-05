@@ -15,6 +15,8 @@ jobs:
           node-version: 20
       - run: npm i axios
       - run: npm i process
+      - run: npm install sharp
+      - run: npm i staticmaps
       - name: Instalar dependencias
         run: npm install twitter-api-v2
       - name: Run Bot
