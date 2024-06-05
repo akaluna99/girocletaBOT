@@ -17,6 +17,11 @@ jobs:
       - run: npm i process
       - run: npm install sharp
       - run: npm i staticmaps
+      - name: Install Google Fonts
+        run: |
+          wget -O ArialBlack.ttf https://github.com/gbif/analytics/raw/master/fonts/Arial%20Black.ttf
+          mv ArialBlack.ttf /usr/share/fonts/
+          fc-cache -fv
       - name: Instalar dependencias
         run: npm install twitter-api-v2
       - name: Run Bot
