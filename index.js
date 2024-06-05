@@ -8,6 +8,7 @@ const client = new TwitterApi({
 import https from 'axios';
 import { exit } from 'process';
 import { TwitterApi } from 'twitter-api-v2';
+import StaticMaps from 'staticmaps';
 
 //console.log(result)
 async function postTwit(twitsArray, lastId) {
@@ -31,6 +32,7 @@ var currentTime = d.toLocaleString('es-ES', {
     timeZone: "Europe/Andorra"
 });
 let jsonGirocleta = res.data;//JSON.parse(res.data);
+let coordinatesList = []
 let twits = []
 let twit = ''
 for (let mStation of jsonGirocleta.network.stations) {
@@ -47,6 +49,8 @@ for (let mStation of jsonGirocleta.network.stations) {
             twit += '\n🔓: ' + String(mStation['empty_slots']);
         }
         twit += '\n';
+        console.log(mStation)
+        coordinatesList.push(mStation) // latitude, longitude, name, empty_slots, free_bikes
     }
 
     if (twit.length > 200) {
@@ -59,25 +63,82 @@ if (twit == '' && twits.length == 0) {
 }
 twits.push(twit);
 var currentTwit = twits.shift()
-console.log(currentTime + '\n' + currentTwit)
+//console.log(currentTime + '\n' + currentTwit)
+const options = {
+    width: 800,
+    height: 900
+};
+const map = new StaticMaps(options);
+const zoom = 14;
+const center = [jsonGirocleta.network.location.longitude, jsonGirocleta.network.location.latitude];
+var maxMap = {
+    maxLat: 0,
+    maxLon: 0,
+    minLat: 100,
+    minLon: 100
+}
+for (let currentStation of coordinatesList) {
+    // latitude, longitude, name, empty_slots, free_bikes
+    if (maxMap.maxLat < currentStation.latitude) {
+        maxMap.maxLat = currentStation.latitude
+    }
+    if (maxMap.minLat > currentStation.latitude) {
+        maxMap.minLat = currentStation.latitude
+    }
+    if (maxMap.maxLon < currentStation.longitude) {
+        maxMap.maxLon = currentStation.longitude
+    }
+    if (maxMap.minLon > currentStation.longitude) {
+        maxMap.minLon = currentStation.longitude
+    }
+
+    const text = {
+        coord: [currentStation.longitude, currentStation.latitude],
+        text: currentStation.name,
+        size: 15,
+        width: 0,
+        fill: '#000000',
+        color: '#000000',
+        font: 'Arial Black',
+        anchor: 'middle'
+    };
+
+    map.addText(text);
+
+    const text2 = {
+        coord: [currentStation.longitude, currentStation.latitude],
+        text: '🚲:' + currentStation.free_bikes + ' 🔓:' + currentStation.empty_slots,
+        offsetY: -15,
+        size: 13,
+        width: 0,
+        fill: '#000000',
+        color: '#000000',
+        font: 'Arial',
+        anchor: 'middle'
+    };
+
+    map.addText(text2);
+}
+console.log(maxMap.minLat + ' , ' + maxMap.minLon)
+console.log(maxMap.maxLat + ' , ' + maxMap.maxLon)
+await map.render([
+    maxMap.minLon, maxMap.minLat,
+    maxMap.maxLon, maxMap.maxLat
+]);
+//await map.render(center, zoom);
+await map.image.save('center.png');
+
+const mediaIds = await Promise.all([
+    // file path
+    client.v1.uploadMedia('./center.png'),
+]);
+
 
 //first twit
 var result = await client.v2.tweet({
-    text: currentTime + '\n' + currentTwit
+    text: currentTime + '\n' + currentTwit,
+    media: { media_ids: mediaIds }
+
 });
 console.log(result)
 postTwit(twits, result.data.id)
-/*
-Bot.post('statuses/update', {
-    status: currentTime + '\n' + currentTwit
-}, function (err, data, response) {
-    postTwit(twits, data.id_str)
-});
-
-    });
-
-}).on("error", (err) => {
-    console.log("Error: " + err.message);
-});
-
-*/
