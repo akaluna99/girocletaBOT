@@ -22,6 +22,11 @@ jobs:
           wget -O ArialBlack.ttf https://github.com/gbif/analytics/raw/master/fonts/Arial%20Black.ttf
           mv ArialBlack.ttf /usr/share/fonts/
           fc-cache -fv
+      - name: Install Google Fonts2
+        run: |
+          wget -O Arial.ttf https://github.com/matomo-org/travis-scripts/raw/master/fonts/Arial.ttf
+          mv Arial.ttf /usr/share/fonts/
+          fc-cache -fv
       - name: Instalar dependencias
         run: npm install twitter-api-v2
       - name: Run Bot
